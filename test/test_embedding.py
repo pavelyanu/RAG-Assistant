@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from pytest import fixture
 
 from rag_assistant.retrieval.embedding import OpenAIEmbedding, SafeEmbeddingDecorator
@@ -5,6 +6,7 @@ from rag_assistant.retrieval.embedding import OpenAIEmbedding, SafeEmbeddingDeco
 
 @fixture
 def openai_embedding():
+    load_dotenv()
     embedding = OpenAIEmbedding(model="text-embedding-3-small")
     embedding = SafeEmbeddingDecorator(embedding, limit=1000)
     yield embedding
