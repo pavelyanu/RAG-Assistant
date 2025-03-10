@@ -8,11 +8,35 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "requests (>=2.32.3,<3.0.0)",
+    "pydantic (>=2.10.6,<3.0.0)",
+    "streamlit (>=1.43.0,<2.0.0)",
+]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
 ]
 
 [tool.poetry]
 packages = [{include = "rag_assistant"}]
 
+
+[tool.poetry.group.development.dependencies]
+ruff = "^0.9.9"
+pytest = "^8.3.5"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
