@@ -143,9 +143,3 @@ class SQLiteProductDatabase(ProductDatabase):
         model = product.model_dump(*args, **kwargs)
         model["image"] = str(model["image"])
         return model
-
-
-if __name__ == "__main__":
-    get_fake_store_data()
-    database = SQLiteProductDatabase()
-    database.create_tables()
