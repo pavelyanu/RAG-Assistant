@@ -61,17 +61,17 @@ class ProductDatabase(ABC):
 
 
 class SQLiteProductDatabase(ProductDatabase):
-    connection: sqlite3.Connection
-    table_name: str = "products"
+    _connection: sqlite3.Connection
+    _table_name: str = "products"
 
     def __init__(self):
         load_dotenv()
-        self.connection = sqlite3.connect(os.environ[DATABASE_ENVIRON])
+        self._connection = sqlite3.connect(os.environ[DATABASE_ENVIRON])
 
     def create_tables(self) -> None:
-        cur = self.connection.cursor()
+        cur = self._connection.cursor()
         cur.execute(f"""
-            CREATE TABLE IF NOT EXISTS {self.table_name} (
+            CREATE TABLE IF NOT EXISTS {self._table_name} (
                 id INTEGER PRIMARY KEY,
                 title STRING NOT NULL,
                 price FLOAT NOT NULL,
@@ -90,28 +90,28 @@ class SQLiteProductDatabase(ProductDatabase):
             SQLiteProductDatabase._product_model_dump_sqlite(x) for x in products
         ]
 
-        cur = self.connection.cursor()
+        cur = self._connection.cursor()
         cur.executemany(
             f"""
-            INSERT INTO {self.table_name} (
+            INSERT INTO {self._table_name} (
                 id, title, price, description, category, image
             ) VALUES (
                 :id, :title, :price, :description, :category, :image
             )""",
             products,
         )
-        self.connection.commit()
+        self._connection.commit()
         cur.close()
 
     def fetch_products(self, ids) -> list[Product]:
         raise NotImplementedError()
 
     def fetch_all(self) -> list[Product]:
-        cur = self.connection.cursor()
+        cur = self._connection.cursor()
         cur.execute(
             f"""
             SELECT id, title, price, description, category, image
-            FROM {self.table_name}
+            FROM {self._table_name}
             """
         )
         products = []
@@ -136,7 +136,7 @@ class SQLiteProductDatabase(ProductDatabase):
         raise NotImplementedError()
 
     def close(self) -> None:
-        self.connection.close()
+        self._connection.close()
 
     @staticmethod
     def _product_model_dump_sqlite(product: Product, *args, **kwargs):

@@ -20,28 +20,28 @@ def cosine_similarity(data: np.ndarray, query: np.ndarray) -> np.ndarray:
 
 
 class NumpyVectorIndex(VectorIndex):
-    dim: int
-    capacity: int
-    vectors: np.ndarray
-    index: dict[int, str]
+    _dim: int
+    _capacity: int
+    _vectors: np.ndarray
+    _index: dict[int, str]
 
     def __init__(self, dim, capacity):
-        self.dim = dim
-        self.capacity = capacity
-        self.vectors = np.zeros((capacity, dim))
-        self.index = {}
+        self._dim = dim
+        self._capacity = capacity
+        self._vectors = np.zeros((capacity, dim))
+        self._index = {}
 
     def insert(self, data: list[tuple[str, np.ndarray]]) -> None:
         for document, v in data:
-            if len(self.index) >= self.capacity:
+            if len(self._index) >= self._capacity:
                 raise ValueError("Index is full")
-            index = len(self.index)
-            self.index[index] = document
-            self.vectors[index] = v
+            index = len(self._index)
+            self._index[index] = document
+            self._vectors[index] = v
 
     def search(self, v: np.ndarray, k: int) -> list[str]:
-        similarity = cosine_similarity(self.vectors, v)
+        similarity = cosine_similarity(self._vectors, v)
         indices = np.argsort(similarity)[::-1]
         indices = indices[:k]
-        results = [self.index[i] for i in indices]
+        results = [self._index[i] for i in indices]
         return results

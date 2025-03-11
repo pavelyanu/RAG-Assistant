@@ -13,38 +13,38 @@ class Embedding(ABC):
 
 
 class SafeEmbeddingDecorator(Embedding):
-    embedding: Embedding
-    limit: int
+    _embedding: Embedding
+    _limit: int
 
     def __init__(self, embedding: Embedding, limit: int):
-        self.embedding = embedding
-        self.limit = limit
+        self._embedding = embedding
+        self._limit = limit
 
     def count_tokens(self, s: str) -> int:
-        return self.embedding.count_tokens(s)
+        return self._embedding.count_tokens(s)
 
     def embed(self, s: str) -> list[float]:
-        if self.count_tokens(s) > self.limit:
+        if self.count_tokens(s) > self._limit:
             raise ValueError("Token limit exceeded")
-        return self.embedding.embed(s)
+        return self._embedding.embed(s)
 
 
 class OpenAIEmbedding(Embedding):
-    model: str
-    client: OpenAI
-    encoding: Encoding
+    _model: str
+    _client: OpenAI
+    _encoding: Encoding
 
     def __init__(self, model: str):
-        self.model = model
-        self.encoding = encoding_for_model(self.model)
-        self.client = OpenAI()
+        self._model = model
+        self._encoding = encoding_for_model(self._model)
+        self._client = OpenAI()
 
     def count_tokens(self, s: str) -> int:
-        return len(self.encoding.encode(s))
+        return len(self._encoding.encode(s))
 
     def embed(self, s: str) -> list[float]:
-        response = self.client.embeddings.create(
-            model=self.model,
+        response = self._client.embeddings.create(
+            model=self._model,
             input=s,
         )
         return response.data[0].embedding

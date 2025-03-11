@@ -14,10 +14,10 @@ class MockSQLiteProductDatabase(SQLiteProductDatabase):
     file = "/tmp/mock_sqlite_product_database_file.db"
 
     def __init__(self):
-        self.connection = sqlite3.connect(self.file)
+        self._connection = sqlite3.connect(self.file)
 
     def close(self) -> None:
-        self.connection.close()
+        self._connection.close()
         os.remove(self.file)
 
 
