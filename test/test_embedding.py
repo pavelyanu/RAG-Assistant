@@ -8,7 +8,7 @@ from rag_assistant.retrieval.embedding import OpenAIEmbedding, SafeEmbeddingDeco
 def openai_embedding():
     load_dotenv()
     embedding = OpenAIEmbedding(model="text-embedding-3-small")
-    embedding = SafeEmbeddingDecorator(embedding, limit=1000)
+    embedding = SafeEmbeddingDecorator(embedding, limit=100)
     yield embedding
 
 
