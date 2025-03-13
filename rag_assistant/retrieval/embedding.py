@@ -31,11 +31,13 @@ class SafeEmbeddingDecorator(Embedding):
 
 class OpenAIEmbedding(Embedding):
     _model: str
+    _dim: int
     _client: OpenAI
     _encoding: Encoding
 
-    def __init__(self, model: str):
+    def __init__(self, model: str, dim: int = 100):
         self._model = model
+        self._dim = dim
         self._encoding = encoding_for_model(self._model)
         self._client = OpenAI()
 
@@ -44,7 +46,6 @@ class OpenAIEmbedding(Embedding):
 
     def embed(self, s: str) -> list[float]:
         response = self._client.embeddings.create(
-            model=self._model,
-            input=s,
+            model=self._model, input=s, dimensions=self._dim
         )
         return response.data[0].embedding
