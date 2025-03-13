@@ -2,7 +2,7 @@
 
 A prototype AI shopping assistant powered by Retrieval-Augmented Generation (RAG) to help customers find products.
 
-![Screenshot of the E-Commerce RAG Assistant](rag_assistant_screenshot.png)
+![Screenshot of the E-Commerce RAG Assistant](rag_assistant_screenshot.jpg)
 
 ## 🚀 Features
 
